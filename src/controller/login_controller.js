@@ -1,6 +1,7 @@
 
-let { User, Login } = require('../model/login.js');
-let Response = require('../utils/response.js').Response
+let Login = require('../model/login.js').Login;
+let User = require('../model/user.js').User;
+let Response = require('../utils/response.js').Response;
 let CryptoJS = require('crypto-js');
 
 
@@ -12,35 +13,93 @@ class LoginController{
 		return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 	}
 
-	login(req, res){
+	async login(req, res){
 		let username = req.query.username;
 		let password = req.query.password;
 
-		User.getUserByUsername(username, function(result){
-			if (result == null){
-				Response.response(res, Response.ResponseCode.ERROR, "Account is not exist", req.query);
-				return;
-			}
-			if (password != result.password){
-				Response.response(res, Response.ResponseCode.ERROR, "Mật khẩu không đúng", {
-					username: username
-				});
-				return;
-			}
-			let time = LoginController.getCurrentStringTime();
-			let token = String(CryptoJS.MD5(`${username}${password}${time}`));
-			Login.insert(token, username, time, function(result){
-				Response.response(res, Response.ResponseCode.OK, "Đăng nhập thành công", {
-					username: username,
-					token: token
-				});
-				return;
+		// console.log(`Login username: ${username}, password: ${password}`);
+
+		if (username == undefined || password == undefined){
+			Response.response(res, Response.ResponseCode.ERROR, "Lack of params", req.query, "Thiếu tham số");
+			return;
+		}
+
+		var result = await User.getUserByUsername(username);
+		if (result == null){
+			Response.response(res, Response.ResponseCode.ERROR, "Account is not exist", req.query);
+			return;
+		}
+		if (password != result.password){
+			Response.response(res, Response.ResponseCode.ERROR, "Mật khẩu không đúng", {
+				username: username
 			});
+			return;
+		}
+
+		let time = LoginController.getCurrentStringTime();
+		let token = String(CryptoJS.MD5(`${username}${password}${time}`));
+		
+		result = await Login.insert(token, username, time);
+		
+		if (result == null){
+			Response.response(res, Response.ResponseCode.OK, "Đăng nhập thất bại", {
+				username: username
+			});
+			return;
+		}
+
+		Response.response(res, Response.ResponseCode.OK, "Đăng nhập thành công", {
+			username: username,
+			token: token
 		});
 	}
 
-	checkToken(token){
+	async checkToken(req, res){
+		let result = await LoginController.checkToken(req, res);
+		if (!result) return;
+		
+		let username = req.username;
+		let user = await User.getUserByUsername(username);
+		if (user == null) {
+			Response.response(res, Response.ResponseCode.ERROR, "Token is expired", req.query);
+			return;
+		}
+		
+		Response.response(res, Response.ResponseCode.OK, "Token is valid", user);
+	}
 
+	static async checkToken(req, res){
+		let token = req.query.token;
+		let username = null;
+		
+		if (token == undefined) {
+			Response.response(res, Response.ResponseCode.ERROR, "Lack of token", req.query);
+			return false;
+		} 
+
+		username = await Login.getUsernameByToken(token);
+		if (username == null) {
+			Response.response(res, Response.ResponseCode.ERROR, "Token is invalid", req.query);
+			return false;
+		}
+
+		req.username = username;
+		return true;
+	}
+
+	async logout(req, res){
+		let result = await LoginController.checkToken(req, res);
+		if (!result) return;
+
+		let token = req.query.token;
+		result = await Login.deleteToken(token);
+
+		if (result == null){
+			Response.response(res, Response.ResponseCode.ERROR, "Logout failed", req.query, "Đăng xuất thất bại");
+			return;
+		}
+
+		Response.response(res, Response.ResponseCode.OK, "Logout success", req.query, "Đăng xuất thành công");
 	}
 }
 
