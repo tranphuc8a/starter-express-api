@@ -16,6 +16,58 @@ class NhankhauController{
 		return numberRegex.test(String(number));
 	}
 
+
+	/*
+	route: GET [domain]/searchNhankhau
+	query: {
+		token: "xxx",
+		idnhankhau: "xxx"
+		hoten: "Trần Văn Phúc"
+		ngaysinh: "2001-04-22"
+		gioitinh: 1   (0: nữ, 1: nam)
+		quequan: "Hưng Yên"
+		dantoc: "Kinh"
+		tongiao: "Không"
+		sohokhau: "1"
+		quanhevoichuho: "Là chủ hộ"
+		cccd: "123456789"
+		ngaycap: "2022-12-20"
+		noicap: "Hưng Yên"
+		nghenghiep: "Sinh viên"
+		ngaydangkythuongtru: "2022-04-22"
+		ngaythemnhankhau: "2022-04-22"
+		ghichu: "Không có ghi chú"
+	required params: token
+	optional params: others params
+	}
+	*/
+	async searchNhankhau(req, res){
+		// check token
+		let result = await LoginController.checkToken(req, res);
+		if (!result) return;
+
+		// get params
+		let { 
+			token, idnhankhau, hoten, ngaysinh, gioitinh, quequan, dantoc, tongiao, 
+		 	sohokhau, quanhevoichuho, cccd, ngaycap, noicap, nghenghiep, 
+			ngaydangkythuongtru, ngaythemnhankhau, ghichu
+		} = req.query;
+
+		var nhankhau = new Nhankhau(idnhankhau, hoten, ngaysinh, gioitinh, quequan, dantoc, tongiao, sohokhau, quanhevoichuho,
+			cccd, ngaycap, noicap, nghenghiep, ngaydangkythuongtru, ngaythemnhankhau, ghichu);
+
+		// search
+		let listNhankhau = await Nhankhau.search(nhankhau);
+
+		if (listNhankhau == null){
+			Response.response(res, Response.ResponseCode.ERROR, "Failed", req.query);
+			return;
+		}
+
+		Response.response(res, Response.ResponseCode.OK, "Success", listNhankhau, "Thành công");
+	
+	}
+
 	/*
 	route: GET [domain]/getListNhankhau
 	query: {

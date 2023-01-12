@@ -16,6 +16,8 @@ nghenghiep
 ngaydangkythuongtru
 ngaythemnhankhau
 ghichu
+
+
 */
 
 class Nhankhau {
@@ -113,6 +115,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         let listNhankhau = [];
@@ -132,6 +135,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         let listNhankhau = [];
@@ -151,6 +155,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         if (result.length <= 0) return null;
@@ -167,6 +172,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         if (result.length <= 0) return null;
@@ -192,6 +198,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         return result;
@@ -222,6 +229,7 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         return result;
@@ -237,11 +245,57 @@ class Nhankhau {
         	result = await connection.my_query(query);
         } catch (err){
         	console.log(err);
+            return null;
         }
 
         return result;
     }
 
+    static getSearchString(key, value, isString = false){
+        if (value == null) return "";
+        if (isString) {
+            return `AND (INSTR(${key}, '${value}') > 0 OR INSTR('${value}', ${key}) > 0) `;
+        }
+        return `AND (${key} = '${value}') `;
+    }
+    static async search(nhankhau){
+        var connection = require('../index.js').connection;
+        var result;
+        let query = `SELECT * FROM nhankhau WHERE TRUE `;
+        query = query + Nhankhau.getSearchString("id", nhankhau.id);
+        query = query + Nhankhau.getSearchString("hoten", nhankhau.hoten, true);
+        query = query + Nhankhau.getSearchString("ngaysinh", nhankhau.ngaysinh);
+        query = query + Nhankhau.getSearchString("gioitinh", nhankhau.gioitinh, true);
+        query = query + Nhankhau.getSearchString("quequan", nhankhau.quequan, true);
+        query = query + Nhankhau.getSearchString("dantoc", nhankhau.dantoc, true);
+        query = query + Nhankhau.getSearchString("tongiao", nhankhau.tongiao, true);
+        query = query + Nhankhau.getSearchString("sohokhau", nhankhau.sohokhau, true);
+        query = query + Nhankhau.getSearchString("quanhevoichuho", nhankhau.quanhevoichuho, true);
+        query = query + Nhankhau.getSearchString("cccd", nhankhau.cccd, true);
+        query = query + Nhankhau.getSearchString("capngay", nhankhau.capngay);
+        query = query + Nhankhau.getSearchString("noicap", nhankhau.noicap, true);
+        query = query + Nhankhau.getSearchString("nghenghiep", nhankhau.nghenghiep, true);
+        query = query + Nhankhau.getSearchString("ngaydangkythuongtru", nhankhau.ngaydangkythuongtru);
+        query = query + Nhankhau.getSearchString("ngaythemnhankhau", nhankhau.ngaythemnhankhau);
+        query = query + Nhankhau.getSearchString("ghichu", nhankhau.ghichu, true);
+            
+        try {   
+            console.log("QUERY: " + query);
+            result = await connection.my_query(query);
+        } catch (err){
+            console.log(err);
+            return null;
+        }
+
+        if (result == null) return null;
+
+        let listNhankhau = [];
+        result.forEach(function(element){
+            listNhankhau.push(Nhankhau.fromJson(element));
+        });
+        
+        return listNhankhau;
+    }
 }
 
 
