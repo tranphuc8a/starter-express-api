@@ -30,7 +30,7 @@ class LichsuRouter{
 		this.app.route('/getHokhauHistory')
 			.get(function(req, res) {
 				let lichsuController = new LichsuController();
-				lichsuController.addNhankhauToHokhau(req, res);
+				lichsuController.getHokhauHistory(req, res);
 			});
 	}
 
