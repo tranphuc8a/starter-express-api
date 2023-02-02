@@ -102,7 +102,7 @@ class LoginController{
 			return false;
 		}
 
-		console.log(login);
+		// console.log(login);
 
 		// check token is expired
 		let expire = 24 * 60 * 60 * 1000; // 24 hours to miliseconds
@@ -113,7 +113,7 @@ class LoginController{
 			return false;
 		}
 
-		req.username = username;
+		req.username = login.username;
 		return true;
 	}
 

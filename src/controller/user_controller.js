@@ -2,7 +2,8 @@
 let User = require('../model/user.js').User;
 let Login = require('../model/login.js').Login;
 let LoginController = require('../controller/login_controller.js').LoginController;
-let Response = require('../utils/response.js').Response
+let Response = require('../utils/response.js').Response;
+let Utils = require('../utils/utils.js').Utils;
 
 class UserController{
 	constructor(){}
@@ -140,6 +141,7 @@ class UserController{
 		// Chỉ Ban quản lý mới đổi được thông tin tài khoản
 		let curUsername = req.username;
 		let curUser = await User.getUserByUsername(curUsername);
+		console.log(curUser);
 		if (curUser == null || curUser.role != "1"){
 			Response.response(res, Response.ResponseCode.ERROR, "No right", req.query, "Chỉ Ban quản lý thực hiện được");
 			return;

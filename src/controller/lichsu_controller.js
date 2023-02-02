@@ -260,7 +260,7 @@ class LichsuController{
 			return;
 		}
 		if (time == undefined){
-			time = new Date();
+			time = Utils.getStringFromUTCDate(new Date());
 		} else {
 			 // check time is valid
 			if (!Utils.checkDate(time)){
@@ -276,8 +276,8 @@ class LichsuController{
 			return;
 		}
 
-		let reqTime = new Date(time).getTime() / 1000;
-		let createTime = new Date(hokhau.ngaylamhokhau).getTime() / 1000;
+		let reqTime = Utils.getUTCDateFromString(time).getTime() / 1000;
+		let createTime = Utils.getUTCDateFromString(hokhau.ngaylamhokhau).getTime() / 1000;
 		let now = (new Date()).getTime() / 1000;
 		// console.log("createTime: " + createTime);
 		// console.log("now: " + now);
