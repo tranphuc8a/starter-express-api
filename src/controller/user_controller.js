@@ -141,7 +141,7 @@ class UserController{
 		// Chỉ Ban quản lý mới đổi được thông tin tài khoản
 		let curUsername = req.username;
 		let curUser = await User.getUserByUsername(curUsername);
-		console.log(curUser);
+		// console.log(curUser);
 		if (curUser == null || curUser.role != "1"){
 			Response.response(res, Response.ResponseCode.ERROR, "No right", req.query, "Chỉ Ban quản lý thực hiện được");
 			return;

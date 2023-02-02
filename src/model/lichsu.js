@@ -47,7 +47,7 @@ class Lichsu {
     static from_json(json) {
         if (json == null) return null;
         let lichsu = new Lichsu(json);
-        lichsu.thoigian = Utils.getUTCDateFromString(lichsu.thoigian);
+        // lichsu.thoigian = Utils.getUTCDateFromString(lichsu.thoigian);
         return lichsu;
     }
     

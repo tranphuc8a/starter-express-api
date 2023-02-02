@@ -58,14 +58,14 @@ class Nhankhau {
     static from_json(json) {
         if (json == null) return null;
         let nhankhau = new Nhankhau(json);
-        if (Object.keys(json).includes("ngaysinh"))
-            nhankhau.ngaysinh = Utils.getUTCDateFromString(nhankhau.ngaysinh);
-        if (Object.keys(json).includes("capngay"))
-            nhankhau.capngay = Utils.getUTCDateFromString(nhankhau.capngay);
-        if (Object.keys(json).includes("ngaydangkythuongtru"))
-            nhankhau.ngaydangkythuongtru = Utils.getUTCDateFromString(nhankhau.ngaydangkythuongtru);
-        if (Object.keys(json).includes("ngaythemnhankhau"))
-            nhankhau.ngaythemnhankhau = Utils.getUTCDateFromString(nhankhau.ngaythemnhankhau);
+        // if (Object.keys(json).includes("ngaysinh"))
+        //     nhankhau.ngaysinh = Utils.getUTCDateFromString(nhankhau.ngaysinh);
+        // if (Object.keys(json).includes("capngay"))
+        //     nhankhau.capngay = Utils.getUTCDateFromString(nhankhau.capngay);
+        // if (Object.keys(json).includes("ngaydangkythuongtru"))
+        //     nhankhau.ngaydangkythuongtru = Utils.getUTCDateFromString(nhankhau.ngaydangkythuongtru);
+        // if (Object.keys(json).includes("ngaythemnhankhau"))
+        //     nhankhau.ngaythemnhankhau = Utils.getUTCDateFromString(nhankhau.ngaythemnhankhau);
         return nhankhau;
     }
 
