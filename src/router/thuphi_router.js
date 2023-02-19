@@ -69,6 +69,11 @@ class ThuphiRouter{
 				let thuphiController = new ThuphiController();
 				thuphiController.getListThuphi(req, res);
 			});
+		this.app.route("/getNotCompleteListThuphi")
+			.get(function(req, res){
+				let thuphiController = new ThuphiController();
+				thuphiController.getNotCompleteListThuphi(req, res);
+			});
 		this.app.route("/searchThuphi")
 			.get(function(req, res){
 				let thuphiController = new ThuphiController();
