@@ -199,8 +199,7 @@ class Admin{
 			await Khoanthu.delete({id : khoanthu.id});
 		}
 	}
-=======
->>>>>>> 0c4b465e8ca8428c279e29fae0f01945d21a20af
+
 }
 
 module.exports = { Admin };
