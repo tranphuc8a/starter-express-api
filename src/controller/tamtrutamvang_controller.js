@@ -34,13 +34,13 @@ class TamtrutamvangController {
         let result = await LoginController.checkToken(req, res);
         if (!result) return;
 
-        let {start, length} = req.query;
-        if (start != null && !Utils.checkNumber(start)) 
+        let { start, length } = req.query;
+        if (start != null && !Utils.checkNumber(start))
             return Response.response(res, Response.ResponseCode.ERROR, "start is invalid", req.query);
-        if (length != null && !Utils.checkNumber(length)) 
+        if (length != null && !Utils.checkNumber(length))
             return Response.response(res, Response.ResponseCode.ERROR, "length is invalid", req.query);
         let pagination = null;
-        if (start != null && length != null){
+        if (start != null && length != null) {
             pagination = {
                 start: start,
                 length: length
@@ -285,6 +285,7 @@ class TamtrutamvangController {
         }
 
         tamtrutamvang["nhankhau"] = nhankhau[0];
+
         Response.response(res, Response.ResponseCode.OK, "Success", tamtrutamvang, "Đã cập nhật thông tin tạm trú tạm vắng");
     }
 

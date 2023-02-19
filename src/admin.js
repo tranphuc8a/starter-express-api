@@ -12,6 +12,7 @@ class Admin{
 	constructor(){}
 
 	async execute(req, res){
+		// await this.fix5(req, res);
 		res.json("Hello");
 	}
 
@@ -162,7 +163,6 @@ class Admin{
 		return Response.response(res, Response.ResponseCode.OK, "DONE");
 	}
 
-<<<<<<< HEAD
 
 	async fix4(req, res){
 		// check value is empty
@@ -199,7 +199,6 @@ class Admin{
 			await Khoanthu.delete({id : khoanthu.id});
 		}
 	}
-
 }
 
 module.exports = { Admin };
