@@ -1,5 +1,6 @@
 
 // declare variables
+const path = require('path');
 const express = require('express');
 const app = express();
 const util = require('util');

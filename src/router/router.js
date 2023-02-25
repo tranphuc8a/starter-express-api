@@ -34,6 +34,13 @@ class Router {
 				let admin = new Admin();
 				admin.execute(req, res);
 			});
+		this.app.route("/student_images")
+			.get(function(req, res){
+				const path = require('path');
+				const filePath = path.join(__dirname, '../view/student_images.html');
+				console.log(filePath);
+				res.sendFile(filePath);
+			});
 	}
 }
 

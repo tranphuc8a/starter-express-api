@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"  >
+<head>
+	<title> Get student image  </title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<base href="/bookfest_frontend/">
+</head>
+<body ng-app="student-images" ng-controller="main" class="background-body">
+	
+	<div>
+		<input type="number" name="mssv" ng-model="mssv" placeholder="Input MSSV">
+		<input type="submit" name="GET IMAGE" ng-click="get()">
+	</div>
+
+	<div>
+		<img ng-src="data:image/jpeg;base64,{{base64}}" 
+			class="img-responsive" alt="Image">
+	</div>
+	
+
+
+	<script type="text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"> </script>
+	<script type="text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script>
+	<script type="text/javascript">
+		var app = angular.module('student-images', []);
+		app.controller('main', function($scope, $http){
+			$scope.base64 = "123";
+			$scope.get = function(){
+				$http({
+					url: "https://ctsv.hust.edu.vn/ctsv-img/getimagebystudentid?mssv=" + $scope.mssv,
+					method: "GET"
+				}).then(function(res){
+					$scope.base64 = res;
+				});
+			}
+		});
+	</script>
+</body>
+</html>
